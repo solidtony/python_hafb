@@ -13,3 +13,8 @@ Reload 'Pycharm'
 ```bash
 $Env:Path += ";C:\users\<username>\appdata\Roaming\Python\Python39\Scripts\"
 ```
+
+### Sample scripts
+```bash
+https://icarus.cs.weber.edu/~hvalle/hafb/
+```
