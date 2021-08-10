@@ -12,7 +12,12 @@ class Note:
         """initialize a note with memo and optional
         space-separated tags. Automatically set the note's
         creation date and a unique id."""
-        pass
+        self._memo = memo
+        self._tags = tags
+        self._creation_date = datetime.date.today()
+        global last_id
+        last_id += 1
+        self._id = last_id
 
     def match(self, filter):
         """Determine if this note matches the filter
@@ -20,7 +25,7 @@ class Note:
 
         Search is case sensitive and matches both text and
         tags."""
-        pass
+        return filter in self._memo or filter in self._tags
 
 
 class Notebook:
@@ -29,28 +34,62 @@ class Notebook:
 
     def __init__(self):
         """Initialize a notebook with an empty list."""
-        pass
+        self._notes = []
 
     def new_note(self, memo, tags=""):
         """Create a new note and add it to the list."""
-        pass
+        self._notes.append(Note(memo, tags))
 
     def _find_note(self, note_id):
         """Locate the note with the given id."""
-        pass
+        for note in self._notes:
+            if note._id == note_id:
+                return note
 
+        return None
 
     def modify_memo(self, note_id, memo):
         """Find the note with the given id and change its
         memo to the given value."""
-        pass
+        note = self._find_note(note_id)
+        if note:
+            note._memo = memo
+            return True
+
+        return False
 
     def modify_tags(self, note_id, tags):
         """Find the note with the given id and change its
         tags to the given value."""
-        pass
+        note = self._find_note(note_id)
+        if note:
+            note._tags = tags
+            return True
+
+        return False
 
     def search(self, filter):
         """Find all notes that match the given filter
         string."""
-        pass
+        return [note for note in self._notes
+                if note.match(filter)]
+
+
+def main():
+    n1 = Note('hello first')
+    n2 = Note('hello again')
+    print(n1._id, n1._memo)
+    print(n2._id, n2._memo)
+    print(n1.match('no'))
+
+    n = Notebook()
+    n.new_note('hello world')
+    n.new_note('hello world, again')
+    print(n._notes[0]._id)
+    print(n._notes[0]._memo)
+    print(n.search('again'))
+    n.modify_memo(0, 'hi world')
+    print(n._notes[0]._memo)
+
+if __name__ == '__main__':
+    main()
